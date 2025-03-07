@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KML Cable Drop Generator</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-project-diagram"></i> KML Cable Drop Generator</h1>
+            <p class="subtitle">Generate Cable Drop paths antara FAT dan HP di dalam Boundary</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="main-tab">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="tab-btn" data-tab="guide-tab">
+                <i class="fas fa-book"></i> User Guide
+            </button>
+            <button class="tab-btn" data-tab="example-tab">
+                <i class="fas fa-file-code"></i> KML Example
+            </button>
+        </nav>
+
+        <main>
+            <!-- Tab Content: Main Application -->
+            <div class="tab-content active" id="main-tab">
+                <section class="upload-section">
+                    <div class="card">
+                        <h2><i class="fas fa-file-upload"></i> Upload KML File</h2>
+                        <div class="upload-container" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop KML file di sini, atau</p>
+                            <label for="kmlFile" class="upload-btn">Pilih File</label>
+                            <input type="file" id="kmlFile" accept=".kml" hidden>
+                        </div>
+                        <div class="file-info" id="fileInfo">
+                            <p>Belum ada file yang dipilih</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="processing-section">
+                    <div class="card">
+                        <h2><i class="fas fa-cogs"></i> Proses KML</h2>
+                        <div class="options">
+                            <div class="option-group">
+                                <label for="boundaryDistance">Jarak Maksimum (meter):</label>
+                                <input type="number" id="boundaryDistance" min="0" value="100">
+                                <small class="option-hint">Jarak maksimum antara HP dan FAT</small>
+                            </div>
+                            <div class="option-group">
+                                <label for="dropLineStyle">Style Cable Drop:</label>
+                                <select id="dropLineStyle">
+                                    <option value="straight">Garis Lurus</option>
+                                    <option value="curved">Garis Melengkung</option>
+                                </select>
+                                <small class="option-hint">Bentuk garis cable drop</small>
+                            </div>
+                        </div>
+                        <button id="processBtn" class="primary-btn" disabled>
+                            <i class="fas fa-play"></i> Proses KML
+                        </button>
+                    </div>
+                </section>
+
+                <section class="result-section" id="resultSection" style="display: none;">
+                    <div class="card">
+                        <h2><i class="fas fa-file-export"></i> Hasil Proses</h2>
+                        <div class="result-info" id="resultInfo">
+                            <div id="resultStats"></div>
+                        </div>
+                        <div class="btn-group">
+                            <button id="downloadBtn" class="primary-btn">
+                                <i class="fas fa-download"></i> Download KML
+                            </button>
+                            <button id="resetBtn" class="secondary-btn">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab Content: User Guide -->
+            <div class="tab-content" id="guide-tab">
+                <div class="card">
+                    <h2><i class="fas fa-book"></i> Panduan Penggunaan</h2>
+
+                    <div class="guide-section">
+                        <h3>Tentang Aplikasi</h3>
+                        <p>KML Cable Drop Generator adalah aplikasi untuk secara otomatis membuat jalur kabel (Cable
+                            Drop) antara FAT (Fiber Access Terminal) dan HP (Home Passing) yang berada dalam area yang
+                            sama (Boundary).</p>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>Cara Penggunaan</h3>
+                        <div class="step-container">
+                            <div class="step">
+                                <div class="step-icon">1</div>
+                                <div class="step-content">
+                                    <h4>Siapkan File KML</h4>
+                                    <p>Pastikan file KML Anda memiliki struktur folder yang benar:</p>
+                                    <ul>
+                                        <li><strong>BOUNDARY</strong> - berisi polygons (area)</li>
+                                        <li><strong>HP</strong> - berisi placemarks (titik lokasi rumah)</li>
+                                        <li><strong>FAT</strong> - berisi placemarks (titik lokasi FAT)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">2</div>
+                                <div class="step-content">
+                                    <h4>Upload File KML</h4>
+                                    <p>Drag & drop file KML atau klik tombol <strong>Pilih File</strong> untuk memilih
+                                        file KML dari komputer Anda.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">3</div>
+                                <div class="step-content">
+                                    <h4>Atur Parameter</h4>
+                                    <p>Tentukan jarak maksimum antara HP dan FAT dalam meter. Cable Drop hanya akan
+                                        dibuat jika jarak tidak melebihi nilai ini.</p>
+                                    <p>Pilih jenis garis untuk Cable Drop (lurus atau melengkung).</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">4</div>
+                                <div class="step-content">
+                                    <h4>Proses KML</h4>
+                                    <p>Klik tombol <strong>Proses KML</strong> dan tunggu hingga proses selesai.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">5</div>
+                                <div class="step-content">
+                                    <h4>Download Hasil</h4>
+                                    <p>Setelah proses selesai, Anda akan melihat statistik hasil. Klik tombol
+                                        <strong>Download KML</strong> untuk mengunduh file KML yang sudah berisi folder
+                                        Cable Drop.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>Struktur File KML</h3>
+                        <p>File KML harus memiliki struktur folder yang benar:</p>
+                        <div class="kml-structure">
+                            <ul class="tree-view">
+                                <li><span class="folder"><i class="fas fa-folder"></i> BOUNDARY</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-draw-polygon"></i> namafile1 (type:
+                                                polygon)</span></li>
+                                        <li><span class="file"><i class="fas fa-draw-polygon"></i> namafile2 (type:
+                                                polygon)</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="folder"><i class="fas fa-folder"></i> HP</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile1 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile1 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile2 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile2 (type:
+                                                placemark)</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="folder"><i class="fas fa-folder"></i> FAT</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile1 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile2 (type:
+                                                placemark)</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="arrow-right">
+                                <i class="fas fa-long-arrow-alt-right"></i>
+                            </div>
+                            <ul class="tree-view">
+                                <li><span class="folder"><i class="fas fa-folder"></i> BOUNDARY</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-draw-polygon"></i> namafile1 (type:
+                                                polygon)</span></li>
+                                        <li><span class="file"><i class="fas fa-draw-polygon"></i> namafile2 (type:
+                                                polygon)</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="folder"><i class="fas fa-folder"></i> HP</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile1 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile1 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile2 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile2 (type:
+                                                placemark)</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="folder"><i class="fas fa-folder"></i> FAT</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile1 (type:
+                                                placemark)</span></li>
+                                        <li><span class="file"><i class="fas fa-map-marker-alt"></i> namafile2 (type:
+                                                placemark)</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="folder added-folder"><i class="fas fa-folder"></i> CABLE DROP</span>
+                                    <ul>
+                                        <li><span class="file"><i class="fas fa-route"></i>
+                                                dropfg_namafile1_to_namafile1 (type: path)</span></li>
+                                        <li><span class="file"><i class="fas fa-route"></i>
+                                                dropfg_namafile1_to_namafile1 (type: path)</span></li>
+                                        <li><span class="file"><i class="fas fa-route"></i>
+                                                dropfg_namafile2_to_namafile2 (type: path)</span></li>
+                                        <li><span class="file"><i class="fas fa-route"></i>
+                                                dropfg_namafile2_to_namafile2 (type: path)</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>Catatan Penting</h3>
+                        <ul class="note-list">
+                            <li><i class="fas fa-exclamation-circle"></i> Nama folder harus persis sama:
+                                <strong>BOUNDARY</strong>, <strong>HP</strong>, dan <strong>FAT</strong> (case
+                                sensitive).
+                            </li>
+                            <li><i class="fas fa-exclamation-circle"></i> HP dan FAT harus berada dalam boundary yang
+                                sama untuk membuat cable drop.</li>
+                            <li><i class="fas fa-exclamation-circle"></i> Jarak antara HP dan FAT tidak boleh melebihi
+                                jarak maksimum yang diatur.</li>
+                            <li><i class="fas fa-exclamation-circle"></i> File KML hasil akan memiliki folder baru
+                                <strong>CABLE DROP</strong> dengan garis magenta berukuran 1.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: KML Example -->
+            <div class="tab-content" id="example-tab">
+                <div class="card">
+                    <h2><i class="fas fa-file-code"></i> Contoh File KML</h2>
+
+                    <div class="example-section">
+                        <h3>Contoh Struktur KML</h3>
+                        <p>Berikut adalah contoh struktur file KML yang valid untuk aplikasi ini:</p>
+
+                        <div class="code-container">
+                            <pre class="code-example">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;kml xmlns="http://www.opengis.net/kml/2.2"&gt;
+&lt;Document&gt;
+  &lt;name&gt;Sample KML Data&lt;/name&gt;
+  
+  &lt;!-- Styles untuk elemen-elemen di KML --&gt;
+  &lt;Style id="boundaryStyle"&gt;
+    &lt;!-- Style untuk boundary --&gt;
+  &lt;/Style&gt;
+  &lt;Style id="hpStyle"&gt;
+    &lt;!-- Style untuk HP --&gt;
+  &lt;/Style&gt;
+  &lt;Style id="fatStyle"&gt;
+    &lt;!-- Style untuk FAT --&gt;
+  &lt;/Style&gt;
+
+  &lt;!-- BOUNDARY Folder --&gt;
+  &lt;Folder&gt;
+    &lt;name&gt;BOUNDARY&lt;/name&gt;
+    &lt;Placemark&gt;
+      &lt;name&gt;namafile1&lt;/name&gt;
+      &lt;styleUrl&gt;#boundaryStyle&lt;/styleUrl&gt;
+      &lt;Polygon&gt;
+        &lt;outerBoundaryIs&gt;
+          &lt;LinearRing&gt;
+            &lt;coordinates&gt;
+              106.8100,6.1950,0
+              106.8150,6.1950,0
+              106.8150,6.1900,0
+              106.8100,6.1900,0
+              106.8100,6.1950,0
+            &lt;/coordinates&gt;
+          &lt;/LinearRing&gt;
+        &lt;/outerBoundaryIs&gt;
+      &lt;/Polygon&gt;
+    &lt;/Placemark&gt;
+  &lt;/Folder&gt;
+
+  &lt;!-- HP Folder --&gt;
+  &lt;Folder&gt;
+    &lt;name&gt;HP&lt;/name&gt;
+    &lt;Placemark&gt;
+      &lt;name&gt;namafile1&lt;/name&gt;
+      &lt;styleUrl&gt;#hpStyle&lt;/styleUrl&gt;
+      &lt;Point&gt;
+        &lt;coordinates&gt;106.8120,6.1920,0&lt;/coordinates&gt;
+      &lt;/Point&gt;
+    &lt;/Placemark&gt;
+    &lt;Placemark&gt;
+      &lt;name&gt;namafile1&lt;/name&gt;
+      &lt;styleUrl&gt;#hpStyle&lt;/styleUrl&gt;
+      &lt;Point&gt;
+        &lt;coordinates&gt;106.8130,6.1930,0&lt;/coordinates&gt;
+      &lt;/Point&gt;
+    &lt;/Placemark&gt;
+  &lt;/Folder&gt;
+
+  &lt;!-- FAT Folder --&gt;
+  &lt;Folder&gt;
+    &lt;name&gt;FAT&lt;/name&gt;
+    &lt;Placemark&gt;
+      &lt;name&gt;namafile1&lt;/name&gt;
+      &lt;styleUrl&gt;#fatStyle&lt;/styleUrl&gt;
+      &lt;Point&gt;
+        &lt;coordinates&gt;106.8125,6.1925,0&lt;/coordinates&gt;
+      &lt;/Point&gt;
+    &lt;/Placemark&gt;
+  &lt;/Folder&gt;
+&lt;/Document&gt;
+&lt;/kml&gt;</pre>
+                            <button id="copyExampleBtn" class="secondary-btn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <a href="#" id="downloadExampleBtn" class="secondary-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+
+                        <div class="example-notes">
+                            <h4>Catatan tentang contoh KML:</h4>
+                            <ul>
+                                <li>Format koordinat adalah <strong>longitude,latitude,altitude</strong> (contoh:
+                                    106.8125,6.1925,0)</li>
+                                <li>Pastikan polygon tertutup (koordinat awal dan akhir sama)</li>
+                                <li>Format file adalah .kml, bukan .kmz</li>
+                                <li>Anda dapat membuat file KML dengan Google Earth Pro atau alat GIS lainnya</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 KML Cable Drop Generator</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link" id="aboutLink"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#" class="footer-link" id="helpLink"><i class="fas fa-question-circle"></i> Help</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Sedang memproses...</p>
+    </div>
+
+    <!-- About modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeAboutModal">&times;</span>
+            <h2><i class="fas fa-info-circle"></i> About</h2>
+            <p>KML Cable Drop Generator adalah aplikasi untuk secara otomatis membuat jalur kabel (Cable Drop) antara
+                FAT (Fiber Access Terminal) dan HP (Home Passing) yang berada dalam area yang sama (Boundary).</p>
+            <p>Versi: 1.0.0</p>
+            <p>Dibuat dengan ❤️ untuk memudahkan proses perencanaan jaringan fiber optic.</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.0/sweetalert2.all.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/kmlParser.js"></script>
+    <script src="./js/cableDropGenerator.js"></script>
+    <script src="./js/kmlWriter.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/ui.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

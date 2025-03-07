@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+  <name>Sample KML Data</name>
+  <Style id="boundaryPolygonStyle">
+    <LineStyle>
+      <color>ff0000ff</color>
+      <width>3</width>
+    </LineStyle>
+    <PolyStyle>
+      <color>330000ff</color>
+    </PolyStyle>
+  </Style>
+  <Style id="hpPlacemarkStyle">
+    <IconStyle>
+      <scale>1.2</scale>
+      <Icon>
+        <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="fatPlacemarkStyle">
+    <IconStyle>
+      <scale>1.4</scale>
+      <Icon>
+        <href>http://maps.google.com/mapfiles/kml/shapes/square.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  
+  <!-- BOUNDARY Folder -->
+  <Folder>
+    <name>BOUNDARY</name>
+    <Placemark>
+      <name>namafile1</name>
+      <styleUrl>#boundaryPolygonStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              106.8100,6.1950,0
+              106.8150,6.1950,0
+              106.8150,6.1900,0
+              106.8100,6.1900,0
+              106.8100,6.1950,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>namafile2</name>
+      <styleUrl>#boundaryPolygonStyle</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              106.8200,6.2050,0
+              106.8250,6.2050,0
+              106.8250,6.2000,0
+              106.8200,6.2000,0
+              106.8200,6.2050,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+  </Folder>
+  
+  <!-- HP Folder -->
+  <Folder>
+    <name>HP</name>
+    <Placemark>
+      <name>namafile1</name>
+      <styleUrl>#hpPlacemarkStyle</styleUrl>
+      <Point>
+        <coordinates>106.8120,6.1920,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>namafile1</name>
+      <styleUrl>#hpPlacemarkStyle</styleUrl>
+      <Point>
+        <coordinates>106.8130,6.1930,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>namafile2</name>
+      <styleUrl>#hpPlacemarkStyle</styleUrl>
+      <Point>
+        <coordinates>106.8220,6.2020,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>namafile2</name>
+      <styleUrl>#hpPlacemarkStyle</styleUrl>
+      <Point>
+        <coordinates>106.8230,6.2030,0</coordinates>
+      </Point>
+    </Placemark>
+  </Folder>
+  
+  <!-- FAT Folder -->
+  <Folder>
+    <name>FAT</name>
+    <Placemark>
+      <name>namafile1</name>
+      <styleUrl>#fatPlacemarkStyle</styleUrl>
+      <Point>
+        <coordinates>106.8125,6.1925,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>namafile2</name>
+      <styleUrl>#fatPlacemarkStyle</styleUrl>
+      <Point>
+        <coordinates>106.8225,6.2025,0</coordinates>
+      </Point>
+    </Placemark>
+  </Folder>
+</Document>
+</kml>
